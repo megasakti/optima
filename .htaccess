@@ -1,0 +1,8 @@
+﻿<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Lindungi berkas sensitif dari akses publik
+    RewriteRule ^(\.env|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|artisan) - [F,L,NC]
+    RewriteRule ^storage/logs/ - [F,L,NC]
+    # Arahkan semua request ke folder public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
