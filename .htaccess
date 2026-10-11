@@ -3,6 +3,8 @@
     # Lindungi berkas sensitif dari akses publik
     RewriteRule ^(\.env|composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml|artisan) - [F,L,NC]
     RewriteRule ^storage/logs/ - [F,L,NC]
+    # Cegah loop redirect jika request sudah berada di dalam /public
+    RewriteCond %{REQUEST_URI} !^/public/
     # Arahkan semua request ke folder public
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
