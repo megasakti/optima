@@ -3,16 +3,15 @@
 namespace Tests\Feature;
 
 use App\Models\Account;
+use App\Models\BankTransaction;
 use App\Models\CashBankAccount;
 use App\Models\Company;
 use App\Models\Lsp;
 use App\Models\TrainingBatch;
 use App\Models\User;
-use App\Models\Vendor;
 use App\Models\VendorBill;
 use App\Services\VendorBillService;
 use App\Services\VendorPaymentService;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -23,6 +22,7 @@ class AccountsPayableAndTreasuryTest extends TestCase
     protected bool $seed = true;
 
     protected User $financeManager;
+
     protected Company $company;
 
     protected function setUp(): void
@@ -252,7 +252,7 @@ class AccountsPayableAndTreasuryTest extends TestCase
     {
         $cashBank = CashBankAccount::where('company_id', $this->company->id)->firstOrFail();
 
-        $tx = \App\Models\BankTransaction::create([
+        $tx = BankTransaction::create([
             'cash_bank_account_id' => $cashBank->id,
             'transaction_date' => now()->toDateString(),
             'transaction_type' => 'deposit',

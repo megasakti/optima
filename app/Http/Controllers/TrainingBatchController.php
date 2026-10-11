@@ -35,8 +35,8 @@ class TrainingBatchController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('batch_code', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
-                  ->orWhereHas('program', fn($pq) => $pq->where('name', 'like', "%{$search}%"));
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhereHas('program', fn ($pq) => $pq->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -132,7 +132,7 @@ class TrainingBatchController extends Controller
     protected function generateBatchCode(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "BTH-" . $yearMonth . "-";
+        $prefix = 'BTH-'.$yearMonth.'-';
 
         $lastNumber = TrainingBatch::where('company_id', $companyId)
             ->where('batch_code', 'like', "{$prefix}%")
@@ -146,6 +146,6 @@ class TrainingBatchController extends Controller
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

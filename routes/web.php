@@ -1,24 +1,25 @@
 <?php
 
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BatchProfitabilityController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CashBankController;
 use App\Http\Controllers\CustomerPaymentController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\DeletionApprovalController;
 use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LspController;
+use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PayableAgingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceivableAgingController;
+use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\TrainingBatchController;
 use App\Http\Controllers\TrainingProgramController;
-use App\Http\Controllers\LspController;
-use App\Http\Controllers\TrainerController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DeletionApprovalController;
 use App\Http\Controllers\VendorBillController;
 use App\Http\Controllers\VendorPaymentController;
 use Illuminate\Support\Facades\Route;
@@ -167,6 +168,9 @@ Route::middleware('auth')->group(function () {
 
     // Instruktur Pelatihan (Trainers)
     Route::middleware('permission:view-trainers')->resource('trainers', TrainerController::class);
+
+    // Data Peserta Pelatihan (Berelasi Klien/Perusahaan)
+    Route::middleware('permission:view-participants')->resource('participants', ParticipantController::class);
 
     // Manajemen Pengguna & PIC (Super Admin)
     Route::middleware('role:Super Admin')->prefix('admin')->name('admin.')->group(function () {

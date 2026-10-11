@@ -29,7 +29,7 @@ return new class extends Migration
                 'operating_revenue',
                 'direct_cost',          // HPP Batch (Sertifikasi, Instruktur, Hotel, dll)
                 'operating_expense',      // Beban Operasional Umum (Gaji, Listrik, Sewa)
-                'other_expense_income'
+                'other_expense_income',
             ])->default('operating_expense');
             $table->boolean('is_cash_bank')->default(false);
             $table->boolean('is_reconcilable')->default(false);
@@ -77,7 +77,7 @@ return new class extends Migration
                 'vendor_payment',
                 'bank_transaction',
                 'reversal',
-                'closing'
+                'closing',
             ])->default('general');
             $table->text('description');
             $table->decimal('total_debit', 15, 2)->default(0.00);

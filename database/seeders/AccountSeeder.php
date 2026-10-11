@@ -11,7 +11,7 @@ class AccountSeeder extends Seeder
     public function run(): void
     {
         $company = Company::first();
-        if (!$company) {
+        if (! $company) {
             return;
         }
 
@@ -27,7 +27,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_asset',
                 'is_cash_bank' => true,
                 'is_reconcilable' => true,
-                'description' => 'Kas Tunai / Kas Kecil (Petty Cash)'
+                'description' => 'Kas Tunai / Kas Kecil (Petty Cash)',
             ],
             [
                 'code' => '102',
@@ -37,7 +37,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_asset',
                 'is_cash_bank' => true,
                 'is_reconcilable' => true,
-                'description' => 'Rekening Giro/Tabungan Utama BCA Operasional'
+                'description' => 'Rekening Giro/Tabungan Utama BCA Operasional',
             ],
             [
                 'code' => '103',
@@ -47,7 +47,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_asset',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Piutang tagihan invoice pelatihan & sertifikasi ke pelanggan'
+                'description' => 'Piutang tagihan invoice pelatihan & sertifikasi ke pelanggan',
             ],
             [
                 'code' => '104',
@@ -57,7 +57,7 @@ class AccountSeeder extends Seeder
                 'category' => 'non_current_asset',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Peralatan kantor, proyektor, komputer, meja'
+                'description' => 'Peralatan kantor, proyektor, komputer, meja',
             ],
             [
                 'code' => '105',
@@ -67,7 +67,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_asset',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Panjar kas operasional kegiatan pelatihan di lapangan'
+                'description' => 'Panjar kas operasional kegiatan pelatihan di lapangan',
             ],
             [
                 'code' => '106',
@@ -77,7 +77,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_asset',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pajak penghasilan pasal 23 yang dipotong oleh pelanggan corporate'
+                'description' => 'Pajak penghasilan pasal 23 yang dipotong oleh pelanggan corporate',
             ],
 
             // ==================== 2. KEWAJIBAN ====================
@@ -89,7 +89,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Kewajiban kepada vendor hotel, katering, dan ATK'
+                'description' => 'Kewajiban kepada vendor hotel, katering, dan ATK',
             ],
             [
                 'code' => '202',
@@ -99,7 +99,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Kewajiban tagihan uji kompetensi & blanko sertifikat kepada LSP mitra BNSP'
+                'description' => 'Kewajiban tagihan uji kompetensi & blanko sertifikat kepada LSP mitra BNSP',
             ],
             [
                 'code' => '203',
@@ -109,7 +109,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Akrual gaji staf dan honor instruktur yang belum dibayarkan'
+                'description' => 'Akrual gaji staf dan honor instruktur yang belum dibayarkan',
             ],
             [
                 'code' => '204',
@@ -119,7 +119,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Utang PPN, PPh 21 tenaga ahli instruktur, dan PPh 23 vendor'
+                'description' => 'Utang PPN, PPh 21 tenaga ahli instruktur, dan PPh 23 vendor',
             ],
             [
                 'code' => '205',
@@ -129,7 +129,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Uang muka pendaftaran batch pelatihan sebelum kegiatan diselenggarakan'
+                'description' => 'Uang muka pendaftaran batch pelatihan sebelum kegiatan diselenggarakan',
             ],
             [
                 'code' => '206',
@@ -139,7 +139,7 @@ class AccountSeeder extends Seeder
                 'category' => 'current_liability',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Akrual utang sewa kantor'
+                'description' => 'Akrual utang sewa kantor',
             ],
 
             // ==================== 3. EKUITAS ====================
@@ -151,7 +151,7 @@ class AccountSeeder extends Seeder
                 'category' => 'equity',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Modal disetor pemilik'
+                'description' => 'Modal disetor pemilik',
             ],
             [
                 'code' => '302',
@@ -161,7 +161,7 @@ class AccountSeeder extends Seeder
                 'category' => 'equity',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Akumulasi laba atau rugi tahun-tahun sebelumnya'
+                'description' => 'Akumulasi laba atau rugi tahun-tahun sebelumnya',
             ],
             [
                 'code' => '303',
@@ -171,7 +171,7 @@ class AccountSeeder extends Seeder
                 'category' => 'equity',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Akun kliring tutup buku tahunan'
+                'description' => 'Akun kliring tutup buku tahunan',
             ],
 
             // ==================== 4. PENDAPATAN ====================
@@ -183,7 +183,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_revenue',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pendapatan dari paket pelatihan dan sertifikasi kompetensi BNSP'
+                'description' => 'Pendapatan dari paket pelatihan dan sertifikasi kompetensi BNSP',
             ],
             [
                 'code' => '402',
@@ -193,7 +193,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_revenue',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pendapatan jasa penyusunan modul, kurikulum, dan konsultasi SKKNI'
+                'description' => 'Pendapatan jasa penyusunan modul, kurikulum, dan konsultasi SKKNI',
             ],
             [
                 'code' => '403',
@@ -203,7 +203,7 @@ class AccountSeeder extends Seeder
                 'category' => 'other_expense_income',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Bunga bank, jasa giro, dan pendapatan non-operasional lainnya'
+                'description' => 'Bunga bank, jasa giro, dan pendapatan non-operasional lainnya',
             ],
 
             // ==================== 5. BIAYA LANGSUNG PELATIHAN (HPP BATCH) ====================
@@ -215,7 +215,7 @@ class AccountSeeder extends Seeder
                 'category' => 'direct_cost',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Modul materi, ATK peserta, sertifikat internal, nametag, seragam/rompi'
+                'description' => 'Modul materi, ATK peserta, sertifikat internal, nametag, seragam/rompi',
             ],
             [
                 'code' => '504',
@@ -225,7 +225,7 @@ class AccountSeeder extends Seeder
                 'category' => 'direct_cost',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Biaya pendaftaran asesi dan asesmen uji kompetensi oleh LSP mitra BNSP'
+                'description' => 'Biaya pendaftaran asesi dan asesmen uji kompetensi oleh LSP mitra BNSP',
             ],
             [
                 'code' => '505',
@@ -235,7 +235,7 @@ class AccountSeeder extends Seeder
                 'category' => 'direct_cost',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Honorium / fee narasumber dan instruktur pengajar batch'
+                'description' => 'Honorium / fee narasumber dan instruktur pengajar batch',
             ],
             [
                 'code' => '514',
@@ -245,7 +245,7 @@ class AccountSeeder extends Seeder
                 'category' => 'direct_cost',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Konsumsi makan siang dan coffee break peserta pelatihan'
+                'description' => 'Konsumsi makan siang dan coffee break peserta pelatihan',
             ],
             [
                 'code' => '515',
@@ -255,7 +255,7 @@ class AccountSeeder extends Seeder
                 'category' => 'direct_cost',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Sewa ruang meeting hotel (fullboard/fullday) dan kamar penginapan'
+                'description' => 'Sewa ruang meeting hotel (fullboard/fullday) dan kamar penginapan',
             ],
 
             // ==================== 6. BIAYA OPERASIONAL & UMUM ====================
@@ -267,7 +267,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Gaji tetap staf kantor, marketing, dan manajemen'
+                'description' => 'Gaji tetap staf kantor, marketing, dan manajemen',
             ],
             [
                 'code' => '502',
@@ -277,7 +277,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Beban sewa gedung kantor operasional'
+                'description' => 'Beban sewa gedung kantor operasional',
             ],
             [
                 'code' => '506',
@@ -287,7 +287,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pajak daerah, retribusi, dan denda pajak jika ada'
+                'description' => 'Pajak daerah, retribusi, dan denda pajak jika ada',
             ],
             [
                 'code' => '507',
@@ -297,7 +297,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Iklan digital (Google/Meta Ads), brosur, pameran, landing page'
+                'description' => 'Iklan digital (Google/Meta Ads), brosur, pameran, landing page',
             ],
             [
                 'code' => '508',
@@ -307,7 +307,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Bonus pencapaian target target batch dan insentif penjualan'
+                'description' => 'Bonus pencapaian target target batch dan insentif penjualan',
             ],
             [
                 'code' => '509',
@@ -317,7 +317,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Tagihan PLN, air, dan koneksi internet WiFi kantor'
+                'description' => 'Tagihan PLN, air, dan koneksi internet WiFi kantor',
             ],
             [
                 'code' => '510',
@@ -327,7 +327,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Biaya administrasi bulanan rekening dan transfer antar bank'
+                'description' => 'Biaya administrasi bulanan rekening dan transfer antar bank',
             ],
             [
                 'code' => '511',
@@ -337,7 +337,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pembelian ATK kantor rutin dan tinta printer'
+                'description' => 'Pembelian ATK kantor rutin dan tinta printer',
             ],
             [
                 'code' => '512',
@@ -347,7 +347,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Kegiatan kepedulian sosial, sumbangan, santunan'
+                'description' => 'Kegiatan kepedulian sosial, sumbangan, santunan',
             ],
             [
                 'code' => '513',
@@ -357,7 +357,7 @@ class AccountSeeder extends Seeder
                 'category' => 'operating_expense',
                 'is_cash_bank' => false,
                 'is_reconcilable' => false,
-                'description' => 'Pengeluaran rupa-rupa operasional umum yang belum terdaftar'
+                'description' => 'Pengeluaran rupa-rupa operasional umum yang belum terdaftar',
             ],
         ];
 
@@ -368,7 +368,7 @@ class AccountSeeder extends Seeder
             Account::firstOrCreate(
                 [
                     'company_id' => $company->id,
-                    'code' => $data['code']
+                    'code' => $data['code'],
                 ],
                 $data
             );

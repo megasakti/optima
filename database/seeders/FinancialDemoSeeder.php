@@ -27,7 +27,7 @@ class FinancialDemoSeeder extends Seeder
     public function run(): void
     {
         $company = Company::first();
-        if (!$company) {
+        if (! $company) {
             return;
         }
 
@@ -165,7 +165,7 @@ class FinancialDemoSeeder extends Seeder
                     'reference_type' => Invoice::class,
                     'reference_id' => $invoice->id,
                     'source_module' => 'invoice',
-                    'description' => 'Pengakuan Piutang Invoice ' . $invoice->invoice_number . ' - ' . $customer->name,
+                    'description' => 'Pengakuan Piutang Invoice '.$invoice->invoice_number.' - '.$customer->name,
                     'total_debit' => 52000000.00,
                     'total_credit' => 52000000.00,
                     'status' => 'posted',
@@ -179,7 +179,7 @@ class FinancialDemoSeeder extends Seeder
                 'account_id' => $accAR->id,
                 'debit' => 52000000.00,
                 'credit' => 0.00,
-                'memo' => 'Piutang Invoice ' . $invoice->invoice_number,
+                'memo' => 'Piutang Invoice '.$invoice->invoice_number,
             ]);
 
             JournalLine::firstOrCreate([
@@ -229,7 +229,7 @@ class FinancialDemoSeeder extends Seeder
                     'reference_type' => CustomerPayment::class,
                     'reference_id' => $payment->id,
                     'source_module' => 'customer_payment',
-                    'description' => 'Penerimaan Kas/Bank Pembayaran ' . $payment->payment_number,
+                    'description' => 'Penerimaan Kas/Bank Pembayaran '.$payment->payment_number,
                     'total_debit' => 26000000.00,
                     'total_credit' => 26000000.00,
                     'status' => 'posted',
@@ -243,7 +243,7 @@ class FinancialDemoSeeder extends Seeder
                 'account_id' => $accBank->id,
                 'debit' => 26000000.00,
                 'credit' => 0.00,
-                'memo' => 'Penerimaan Transfer Bank BCA ' . $customer->name,
+                'memo' => 'Penerimaan Transfer Bank BCA '.$customer->name,
             ]);
 
             JournalLine::firstOrCreate([
@@ -251,7 +251,7 @@ class FinancialDemoSeeder extends Seeder
                 'account_id' => $accAR->id,
                 'debit' => 0.00,
                 'credit' => 26000000.00,
-                'memo' => 'Pelunasan Sebagian Piutang Invoice ' . $invoice->invoice_number,
+                'memo' => 'Pelunasan Sebagian Piutang Invoice '.$invoice->invoice_number,
             ]);
 
             $payment->update(['journal_entry_id' => $journalPay->id]);
@@ -302,7 +302,7 @@ class FinancialDemoSeeder extends Seeder
                     'reference_type' => VendorBill::class,
                     'reference_id' => $bill->id,
                     'source_module' => 'vendor_bill',
-                    'description' => 'Tagihan Asesmen Sertifikasi LSP ' . $bill->bill_number,
+                    'description' => 'Tagihan Asesmen Sertifikasi LSP '.$bill->bill_number,
                     'total_debit' => 21600000.00,
                     'total_credit' => 21600000.00,
                     'status' => 'posted',
@@ -324,7 +324,7 @@ class FinancialDemoSeeder extends Seeder
                 'account_id' => $accAPLsp->id,
                 'debit' => 0.00,
                 'credit' => 21600000.00,
-                'memo' => 'Utang Sertifikasi ke ' . $lsp->name,
+                'memo' => 'Utang Sertifikasi ke '.$lsp->name,
             ]);
 
             $bill->update(['journal_entry_id' => $journalBill->id]);

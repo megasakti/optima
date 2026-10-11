@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthenticationAndRbacTest extends TestCase

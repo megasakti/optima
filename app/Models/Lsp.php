@@ -36,4 +36,9 @@ class Lsp extends Model
     {
         return $this->hasMany(VendorBill::class);
     }
+
+    public function participants(): HasMany
+    {
+        return $this->hasMany(Participant::class);
+    }
 }

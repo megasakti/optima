@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\CustomerPayment;
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Response;
 
 class PdfInvoiceService
 {

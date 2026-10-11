@@ -15,13 +15,13 @@ class DeletionService
     public function requestOrDelete(User $user, Model $model, string $label, ?string $reason = null): array
     {
         $companyId = $user->company_id ?? ($model->company_id ?? 1);
-        $reason = $reason ?: 'Permintaan penghapusan data ' . $label;
+        $reason = $reason ?: 'Permintaan penghapusan data '.$label;
 
         // Jika user adalah Super Admin, eksekusi hapus langsung
         if ($user->hasRole('Super Admin')) {
-            return DB::transaction(function () use ($user, $model, $label, $reason, $companyId) {
+            return DB::transaction(function () use ($user, $model, $label, $reason) {
                 $snapshot = $model->toArray();
-                
+
                 // Cari apakah ada pending deletion request untuk record ini, jika ada approve otomatis
                 DeletionRequest::where('model_type', get_class($model))
                     ->where('model_id', $model->id)
@@ -92,7 +92,7 @@ class DeletionService
      */
     public function approve(DeletionRequest $deletionRequest, User $superAdmin): array
     {
-        if (!$superAdmin->hasRole('Super Admin')) {
+        if (! $superAdmin->hasRole('Super Admin')) {
             throw new \DomainException('Hanya Super Administrator yang berwenang menyetujui penghapusan data.');
         }
 
@@ -134,7 +134,7 @@ class DeletionService
      */
     public function reject(DeletionRequest $deletionRequest, User $superAdmin, string $rejectionReason): array
     {
-        if (!$superAdmin->hasRole('Super Admin')) {
+        if (! $superAdmin->hasRole('Super Admin')) {
             throw new \DomainException('Hanya Super Administrator yang berwenang menolak penghapusan data.');
         }
 

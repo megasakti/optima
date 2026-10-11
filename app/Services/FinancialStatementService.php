@@ -54,15 +54,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('credit');
 
             $amount = $sumCredit - $sumDebit; // Saldo normal Kredit
@@ -81,7 +81,7 @@ class FinancialStatementService
         $cogsAccounts = Account::where('company_id', $companyId)
             ->where(function ($q) {
                 $q->where('code', 'like', '5%')
-                  ->orWhere('category', 'cost_of_sales');
+                    ->orWhere('category', 'cost_of_sales');
             })
             ->where('is_active', true)
             ->orderBy('code')
@@ -94,15 +94,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('credit');
 
             $amount = $sumDebit - $sumCredit; // Saldo normal Debit
@@ -135,15 +135,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('credit');
 
             $amount = $sumDebit - $sumCredit; // Saldo normal Debit
@@ -175,15 +175,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('credit');
 
             $amount = $sumCredit - $sumDebit;
@@ -210,15 +210,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->whereBetween('entry_date', [$startDate, $endDate]);
+                        ->where('status', 'posted')
+                        ->whereBetween('entry_date', [$startDate, $endDate]);
                 })->sum('credit');
 
             $amount = $sumDebit - $sumCredit;
@@ -300,15 +300,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('credit');
 
             $balance = $sumDebit - $sumCredit;
@@ -337,15 +337,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('credit');
 
             // Jika kontra aset (akumulasi penyusutan, saldo kredit mengurangi aset)
@@ -378,15 +378,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('credit');
 
             $balance = $sumCredit - $sumDebit; // Saldo normal Kredit
@@ -415,15 +415,15 @@ class FinancialStatementService
             $sumDebit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $acc->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })->sum('credit');
 
             $balance = $sumCredit - $sumDebit; // Saldo normal Kredit
@@ -439,20 +439,20 @@ class FinancialStatementService
         }
 
         // 5. Laba Periode Berjalan (Current Period Earnings dari jurnal nominal yang belum ditutup)
-        $totRevenueUpToDate = (float) JournalLine::whereHas('account', fn($aq) => $aq->where('company_id', $companyId)->where('type', 'revenue'))
+        $totRevenueUpToDate = (float) JournalLine::whereHas('account', fn ($aq) => $aq->where('company_id', $companyId)->where('type', 'revenue'))
             ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<=', $asOfDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<=', $asOfDate);
             })
             ->select(DB::raw('SUM(credit) - SUM(debit) as net_rev'))
             ->value('net_rev') ?? 0.0;
 
-        $totExpenseUpToDate = (float) JournalLine::whereHas('account', fn($aq) => $aq->where('company_id', $companyId)->where('type', 'expense'))
+        $totExpenseUpToDate = (float) JournalLine::whereHas('account', fn ($aq) => $aq->where('company_id', $companyId)->where('type', 'expense'))
             ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<=', $asOfDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<=', $asOfDate);
             })
             ->select(DB::raw('SUM(debit) - SUM(credit) as net_exp'))
             ->value('net_exp') ?? 0.0;
@@ -511,10 +511,10 @@ class FinancialStatementService
         $cashBankAccounts = Account::where('company_id', $companyId)
             ->where(function ($q) {
                 $q->where('is_cash_bank', true)
-                  ->orWhere('code', 'like', '101%')
-                  ->orWhere('code', 'like', '102%')
-                  ->orWhere('code', 'like', '103%')
-                  ->orWhere('code', 'like', '104%');
+                    ->orWhere('code', 'like', '101%')
+                    ->orWhere('code', 'like', '102%')
+                    ->orWhere('code', 'like', '103%')
+                    ->orWhere('code', 'like', '104%');
             })
             ->pluck('id');
 
@@ -522,15 +522,15 @@ class FinancialStatementService
         $begDebit = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $startDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<', $startDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<', $startDate);
             })->sum('debit');
 
         $begCredit = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $startDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<', $startDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<', $startDate);
             })->sum('credit');
 
         $beginningCash = $begDebit - $begCredit;
@@ -539,15 +539,15 @@ class FinancialStatementService
         $endDebit = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $endDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<=', $endDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<=', $endDate);
             })->sum('debit');
 
         $endCredit = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $endDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<=', $endDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<=', $endDate);
             })->sum('credit');
 
         $endingCash = $endDebit - $endCredit;
@@ -569,15 +569,15 @@ class FinancialStatementService
         $totalCashOutflow = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->whereBetween('entry_date', [$startDate, $endDate]);
+                    ->where('status', 'posted')
+                    ->whereBetween('entry_date', [$startDate, $endDate]);
             })->sum('credit');
 
         $totalCashInflow = (float) JournalLine::whereIn('account_id', $cashBankAccounts)
             ->whereHas('entry', function ($q) use ($companyId, $startDate, $endDate) {
                 $q->where('company_id', $companyId)
-                  ->where('status', 'posted')
-                  ->whereBetween('entry_date', [$startDate, $endDate]);
+                    ->where('status', 'posted')
+                    ->whereBetween('entry_date', [$startDate, $endDate]);
             })->sum('debit');
 
         // Selisih pengeluaran operasional kas umum

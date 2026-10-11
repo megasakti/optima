@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Invoice;
 use App\Models\TrainingBatch;
 use App\Models\VendorBill;
-use App\Models\VendorBillItem;
 
 class BatchProfitabilityService
 {

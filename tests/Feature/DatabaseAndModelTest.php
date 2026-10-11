@@ -3,11 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Account;
-use App\Models\AccountingPeriod;
 use App\Models\Budget;
-use App\Models\CashBankAccount;
 use App\Models\Company;
-use App\Models\Customer;
 use App\Models\CustomerPayment;
 use App\Models\Invoice;
 use App\Models\JournalEntry;
@@ -16,7 +13,6 @@ use App\Models\Trainer;
 use App\Models\TrainingBatch;
 use App\Models\TrainingProgram;
 use App\Models\User;
-use App\Models\Vendor;
 use App\Models\VendorBill;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,6 +22,7 @@ class DatabaseAndModelTest extends TestCase
     use RefreshDatabase;
 
     protected bool $seed = true;
+
     public function test_company_and_users_exist_with_roles(): void
     {
         $company = Company::where('code', 'OPTIMA-ID')->first();

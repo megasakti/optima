@@ -15,8 +15,8 @@ class LspFactory extends Factory
         return [
             'company_id' => Company::factory(),
             'code' => strtoupper(fake()->unique()->lexify('LSP-????')),
-            'name' => 'LSP ' . fake()->words(2, true),
-            'bnsp_license_number' => 'BNSP-LSP-' . fake()->numerify('###') . '-ID/2023',
+            'name' => 'LSP '.fake()->words(2, true),
+            'bnsp_license_number' => 'BNSP-LSP-'.fake()->numerify('###').'-ID/2023',
             'pic_name' => fake()->name(),
             'pic_phone' => fake()->phoneNumber(),
             'pic_email' => fake()->safeEmail(),

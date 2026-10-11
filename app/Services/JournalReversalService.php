@@ -40,19 +40,19 @@ class JournalReversalService
                 ->where('is_closed', false)
                 ->first();
 
-            if (!$period) {
+            if (! $period) {
                 $period = AccountingPeriod::where('company_id', $companyId)
                     ->where('is_closed', false)
                     ->orderBy('start_date')
                     ->first();
 
-                if (!$period) {
+                if (! $period) {
                     throw new InvalidArgumentException("Tidak ada periode akuntansi aktif untuk tanggal pembalikan {$date}.");
                 }
             }
 
             // 3. Generate Nomor Jurnal Pembalik
-            $reversalNumber = "REV-" . $originalJournal->entry_number;
+            $reversalNumber = 'REV-'.$originalJournal->entry_number;
 
             // 4. Buat Header Jurnal Pembalik
             $user = Auth::user();

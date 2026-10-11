@@ -39,7 +39,7 @@ return new class extends Migration
                 'approved',
                 'partial',
                 'paid',
-                'cancelled'
+                'cancelled',
             ])->default('draft');
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->constrained('users')->restrictOnDelete();

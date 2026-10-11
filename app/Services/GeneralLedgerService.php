@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Account;
 use App\Models\JournalLine;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class GeneralLedgerService
 {
@@ -33,8 +32,8 @@ class GeneralLedgerService
         $initialQuery = JournalLine::where('account_id', $account->id)
             ->whereHas('entry', function ($q) use ($account, $startDate, $batchId) {
                 $q->where('company_id', $account->company_id)
-                  ->where('status', 'posted')
-                  ->where('entry_date', '<', $startDate);
+                    ->where('status', 'posted')
+                    ->where('entry_date', '<', $startDate);
 
                 if ($batchId) {
                     $q->where('batch_id', $batchId);
@@ -54,8 +53,8 @@ class GeneralLedgerService
         $linesQuery = JournalLine::where('account_id', $account->id)
             ->whereHas('entry', function ($q) use ($account, $startDate, $endDate, $batchId) {
                 $q->where('company_id', $account->company_id)
-                  ->where('status', 'posted')
-                  ->whereBetween('entry_date', [$startDate, $endDate]);
+                    ->where('status', 'posted')
+                    ->whereBetween('entry_date', [$startDate, $endDate]);
 
                 if ($batchId) {
                     $q->where('batch_id', $batchId);
@@ -88,6 +87,7 @@ class GeneralLedgerService
             }
 
             $line->running_balance = $runningBalance;
+
             return $line;
         });
 

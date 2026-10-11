@@ -49,7 +49,7 @@ return new class extends Migration
                 'training_kit_materials',
                 'transport_travel',
                 'marketing',
-                'contingency_other'
+                'contingency_other',
             ])->default('training_kit_materials');
             $table->string('description', 255);
             $table->decimal('quantity', 10, 2)->default(1);

@@ -18,8 +18,11 @@ class FinancialReportsAndAuditTest extends TestCase
     protected bool $seed = true;
 
     protected Company $company;
+
     protected User $superAdmin;
+
     protected User $financeManager;
+
     protected User $operationsCoordinator;
 
     protected function setUp(): void

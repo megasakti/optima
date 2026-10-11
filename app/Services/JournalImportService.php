@@ -3,14 +3,12 @@
 namespace App\Services;
 
 use App\Models\Account;
-use App\Models\JournalEntry;
 use App\Models\TrainingBatch;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -18,7 +16,6 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class JournalImportService
 {
@@ -34,7 +31,7 @@ class JournalImportService
      */
     public function generateTemplate(int $companyId): Spreadsheet
     {
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $spreadsheet->getProperties()
             ->setCreator('Optima Finance System')
             ->setTitle('Template Bulk Import Jurnal Umum');
@@ -130,7 +127,7 @@ class JournalImportService
             ];
         }
 
-        if (!empty($coaRows)) {
+        if (! empty($coaRows)) {
             $coaSheet->fromArray($coaRows, null, 'A2');
             $lastRow = count($coaRows) + 1;
             $coaSheet->getStyle("A2:F{$lastRow}")->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN)->getColor()->setRGB('E2E8F0');
@@ -175,13 +172,14 @@ class JournalImportService
      * Memproses impor file Excel (.xlsx / .xls)
      *
      * @return array{success: bool, journals_count: int, lines_count: int, total_amount: float, journal_numbers: array}
+     *
      * @throws InvalidArgumentException
      */
     public function import(UploadedFile $file, int $companyId, User $user): array
     {
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, ['xlsx', 'xls'])) {
-            throw new InvalidArgumentException("Format berkas tidak valid. Harap unggah berkas berekstensi .xlsx atau .xls.");
+        if (! in_array($extension, ['xlsx', 'xls'])) {
+            throw new InvalidArgumentException('Format berkas tidak valid. Harap unggah berkas berekstensi .xlsx atau .xls.');
         }
 
         $spreadsheet = IOFactory::load($file->getRealPath());
@@ -189,11 +187,11 @@ class JournalImportService
         $rows = $sheet->toArray(null, true, true, true);
 
         if (count($rows) < 2) {
-            throw new InvalidArgumentException("Berkas Excel kosong atau tidak memiliki data baris transaksi.");
+            throw new InvalidArgumentException('Berkas Excel kosong atau tidak memiliki data baris transaksi.');
         }
 
         // 1. Identifikasi Mapping Kolom Berdasarkan Header Baris 1
-        $headerRow = array_map(fn($val) => strtolower(trim((string)$val)), $rows[1]);
+        $headerRow = array_map(fn ($val) => strtolower(trim((string) $val)), $rows[1]);
         $colMap = $this->resolveColumnMapping($headerRow);
 
         // Ambil data akun perusahaan untuk lookup cepat
@@ -210,9 +208,9 @@ class JournalImportService
             $row = $rows[$r];
 
             // Cek apakah baris kosong
-            $noTrx = trim((string)($row[$colMap['no_trx']] ?? ''));
-            $dateRaw = trim((string)($row[$colMap['date']] ?? ''));
-            $accountCode = trim((string)($row[$colMap['account_code']] ?? ''));
+            $noTrx = trim((string) ($row[$colMap['no_trx']] ?? ''));
+            $dateRaw = trim((string) ($row[$colMap['date']] ?? ''));
+            $accountCode = trim((string) ($row[$colMap['account_code']] ?? ''));
             $debitRaw = $row[$colMap['debit']] ?? 0;
             $creditRaw = $row[$colMap['credit']] ?? 0;
 
@@ -228,7 +226,7 @@ class JournalImportService
                 throw new InvalidArgumentException("Baris {$r} (Transaksi {$noTrx}): Kolom 'Kode Akun' tidak boleh kosong.");
             }
 
-            if (!isset($accounts[$accountCode])) {
+            if (! isset($accounts[$accountCode])) {
                 throw new InvalidArgumentException("Baris {$r} (Transaksi {$noTrx}): Kode Akun '{$accountCode}' tidak ditemukan di Bagan Akun (COA). Periksa sheet Daftar_Kode_Akun_COA.");
             }
 
@@ -247,12 +245,12 @@ class JournalImportService
                 throw new InvalidArgumentException("Baris {$r} (Transaksi {$noTrx}): Baris harus memiliki nominal Debit atau Kredit (tidak boleh keduanya nol).");
             }
 
-            $description = trim((string)($row[$colMap['description']] ?? ''));
-            $memo = trim((string)($row[$colMap['memo']] ?? ''));
-            $batchCode = trim((string)($row[$colMap['batch_code']] ?? ''));
+            $description = trim((string) ($row[$colMap['description']] ?? ''));
+            $memo = trim((string) ($row[$colMap['memo']] ?? ''));
+            $batchCode = trim((string) ($row[$colMap['batch_code']] ?? ''));
             $batchId = isset($batches[$batchCode]) ? $batches[$batchCode]->id : null;
 
-            if (!isset($groupedJournals[$noTrx])) {
+            if (! isset($groupedJournals[$noTrx])) {
                 $groupedJournals[$noTrx] = [
                     'no_trx' => $noTrx,
                     'date' => $parsedDate,
@@ -277,20 +275,20 @@ class JournalImportService
         }
 
         if (empty($groupedJournals)) {
-            throw new InvalidArgumentException("Tidak ada transaksi valid yang ditemukan di dalam berkas.");
+            throw new InvalidArgumentException('Tidak ada transaksi valid yang ditemukan di dalam berkas.');
         }
 
         // 3. Validasi Aturan Akuntansi (Keseimbangan & Minimal 2 Baris per Jurnal)
         foreach ($groupedJournals as $noTrx => $jData) {
             if (count($jData['lines']) < 2) {
-                throw new InvalidArgumentException("Transaksi '{$noTrx}' hanya memiliki " . count($jData['lines']) . " baris. Jurnal akuntansi wajib memiliki minimal 2 baris (1 debit dan 1 kredit).");
+                throw new InvalidArgumentException("Transaksi '{$noTrx}' hanya memiliki ".count($jData['lines']).' baris. Jurnal akuntansi wajib memiliki minimal 2 baris (1 debit dan 1 kredit).');
             }
 
             $diff = abs($jData['total_debit'] - $jData['total_credit']);
             if ($diff > 0.01) {
                 $fmtDebit = number_format($jData['total_debit'], 0, ',', '.');
                 $fmtCredit = number_format($jData['total_credit'], 0, ',', '.');
-                throw new InvalidArgumentException("Transaksi '{$noTrx}' TIDAK SEIMBANG! Total Debit (Rp {$fmtDebit}) tidak sama dengan Total Kredit (Rp {$fmtCredit}). Selisih: Rp " . number_format($diff, 2));
+                throw new InvalidArgumentException("Transaksi '{$noTrx}' TIDAK SEIMBANG! Total Debit (Rp {$fmtDebit}) tidak sama dengan Total Kredit (Rp {$fmtCredit}). Selisih: Rp ".number_format($diff, 2));
             }
         }
 
@@ -318,7 +316,7 @@ class JournalImportService
                 null,
                 null,
                 ['journals_count' => count($createdJournals), 'total_amount' => $totalGrossAmount],
-                "Bulk import " . count($createdJournals) . " jurnal umum berhasil dilakukan oleh {$user->name}. Total mutasi: Rp " . number_format($totalGrossAmount, 0, ',', '.')
+                'Bulk import '.count($createdJournals)." jurnal umum berhasil dilakukan oleh {$user->name}. Total mutasi: Rp ".number_format($totalGrossAmount, 0, ',', '.')
             );
         });
 
@@ -386,7 +384,7 @@ class JournalImportService
         // Jika berupa nilai serial number Excel
         if (is_numeric($dateVal)) {
             try {
-                return ExcelDate::excelToDateTimeObject((float)$dateVal)->format('Y-m-d');
+                return ExcelDate::excelToDateTimeObject((float) $dateVal)->format('Y-m-d');
             } catch (\Exception $e) {
                 // fall through
             }
@@ -406,18 +404,19 @@ class JournalImportService
     protected function parseNumber(mixed $val): float
     {
         if (is_numeric($val)) {
-            return (float)$val;
+            return (float) $val;
         }
 
         if (is_string($val)) {
             // Bersihkan format titik, koma, spasi, simbol mata uang
             $clean = preg_replace('/[^\d.,-]/', '', $val);
-            if (str_contains($clean, ',') && !str_contains($clean, '.')) {
+            if (str_contains($clean, ',') && ! str_contains($clean, '.')) {
                 $clean = str_replace(',', '.', $clean);
             } else {
                 $clean = str_replace(',', '', $clean);
             }
-            return (float)$clean;
+
+            return (float) $clean;
         }
 
         return 0.0;

@@ -37,8 +37,8 @@ class TrainingProgramController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
-                  ->orWhere('skkni_scheme_name', 'like', "%{$search}%");
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhere('skkni_scheme_name', 'like', "%{$search}%");
             });
         }
 
@@ -67,7 +67,7 @@ class TrainingProgramController extends Controller
         $companyId = Auth::user()->company_id;
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:training_programs,code,NULL,id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:training_programs,code,NULL,id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'lsp_id' => ['nullable', 'exists:lsps,id'],
             'skkni_scheme_name' => ['nullable', 'string', 'max:200'],
@@ -135,7 +135,7 @@ class TrainingProgramController extends Controller
         $oldData = $program->toArray();
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:training_programs,code,' . $id . ',id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:training_programs,code,'.$id.',id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'lsp_id' => ['nullable', 'exists:lsps,id'],
             'skkni_scheme_name' => ['nullable', 'string', 'max:200'],

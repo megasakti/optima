@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\TrainingBatch;
 use App\Models\User;
+use App\Services\CustomerPaymentService;
 use App\Services\InvoiceService;
 use App\Services\ReceivableAgingService;
 use Carbon\Carbon;
@@ -22,6 +23,7 @@ class InvoiceAndReceivablesTest extends TestCase
     protected bool $seed = true;
 
     protected User $financeManager;
+
     protected Company $company;
 
     protected function setUp(): void
@@ -335,7 +337,7 @@ class InvoiceAndReceivablesTest extends TestCase
         $this->assertEquals('application/pdf', $invPdfResponse->headers->get('content-type'));
 
         // Test Customer Payment Receipt PDF endpoint
-        $paymentService = app(\App\Services\CustomerPaymentService::class);
+        $paymentService = app(CustomerPaymentService::class);
         $payment = $paymentService->recordPayment([
             'company_id' => $this->company->id,
             'customer_id' => $customer->id,

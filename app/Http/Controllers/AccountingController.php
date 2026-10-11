@@ -7,16 +7,17 @@ use App\Models\AccountingPeriod;
 use App\Models\JournalEntry;
 use App\Models\TrainingBatch;
 use App\Services\GeneralLedgerService;
+use App\Services\JournalImportService;
 use App\Services\JournalPostingService;
 use App\Services\JournalReversalService;
-use App\Services\JournalImportService;
 use App\Services\PeriodClosingService;
 use App\Services\TrialBalanceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AccountingController extends Controller
 {
@@ -39,7 +40,7 @@ class AccountingController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%");
+                    ->orWhere('name', 'like', "%{$search}%");
             });
         }
 
@@ -57,7 +58,7 @@ class AccountingController extends Controller
         $companyId = Auth::user()->company_id;
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:accounts,code,NULL,id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:accounts,code,NULL,id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'type' => ['required', 'in:asset,liability,equity,revenue,expense'],
             'normal_balance' => ['required', 'in:debit,credit'],
@@ -108,7 +109,7 @@ class AccountingController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('entry_number', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -130,7 +131,7 @@ class AccountingController extends Controller
         $fileName = 'Template_Bulk_Import_Jurnal_Optima.xlsx';
 
         return response()->streamDownload(function () use ($spreadsheet) {
-            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $writer = new Xlsx($spreadsheet);
             $writer->save('php://output');
         }, $fileName, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -155,6 +156,7 @@ class AccountingController extends Controller
             );
 
             $fmtAmount = number_format($result['total_amount'], 0, ',', '.');
+
             return redirect()->route('accounting.journals.index')
                 ->with('success', "Berhasil mengimpor {$result['journals_count']} transaksi jurnal umum ({$result['lines_count']} baris) dengan total mutasi Rp {$fmtAmount}.");
         } catch (\Exception $e) {

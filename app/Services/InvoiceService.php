@@ -3,11 +3,7 @@
 namespace App\Services;
 
 use App\Models\Account;
-use App\Models\Company;
-use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\InvoiceItem;
-use App\Models\TrainingBatch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -47,7 +43,7 @@ class InvoiceService
             $items = $data['items'] ?? [];
 
             if (empty($items)) {
-                throw new InvalidArgumentException("Invoice wajib memiliki minimal 1 item jasa pelatihan atau sertifikasi.");
+                throw new InvalidArgumentException('Invoice wajib memiliki minimal 1 item jasa pelatihan atau sertifikasi.');
             }
 
             // 1. Hitung Subtotal dari rincian item
@@ -127,7 +123,7 @@ class InvoiceService
                 $invoice,
                 null,
                 ['invoice_number' => $invoice->invoice_number, 'total' => $totalAmount],
-                "Pembuatan Invoice {$invoice->invoice_number} senilai Rp " . number_format($totalAmount, 2)
+                "Pembuatan Invoice {$invoice->invoice_number} senilai Rp ".number_format($totalAmount, 2)
             );
 
             return $invoice;
@@ -140,7 +136,7 @@ class InvoiceService
     public function issueInvoice(Invoice $invoice): Invoice
     {
         return DB::transaction(function () use ($invoice) {
-            if (!in_array($invoice->status, ['draft', 'pending_approval'])) {
+            if (! in_array($invoice->status, ['draft', 'pending_approval'])) {
                 throw new InvalidArgumentException("Invoice {$invoice->invoice_number} sudah diterbitkan atau dibatalkan.");
             }
 
@@ -153,8 +149,8 @@ class InvoiceService
             $accDP = Account::where('company_id', $companyId)->where('code', '205')->first(); // Pendapatan Diterima di Muka (Kewajiban)
             $accTaxPayable = Account::where('company_id', $companyId)->where('code', '204')->first(); // Utang PPN
 
-            if (!$accAR || !$accRevenue) {
-                throw new InvalidArgumentException("Akun Piutang Usaha (103) atau Pendapatan Pelatihan (401) tidak ditemukan.");
+            if (! $accAR || ! $accRevenue) {
+                throw new InvalidArgumentException('Akun Piutang Usaha (103) atau Pendapatan Pelatihan (401) tidak ditemukan.');
             }
 
             // 2. Susun Baris Jurnal Double-Entry
@@ -197,7 +193,7 @@ class InvoiceService
             }
 
             // 3. Posting Jurnal via JournalPostingService
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $journal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $invoice->invoice_date->toDateString(),
@@ -235,7 +231,7 @@ class InvoiceService
     protected function generateInvoiceNumber(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "INV-" . $yearMonth . "-";
+        $prefix = 'INV-'.$yearMonth.'-';
 
         $lastNumber = Invoice::where('company_id', $companyId)
             ->where('invoice_number', 'like', "{$prefix}%")
@@ -249,6 +245,6 @@ class InvoiceService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

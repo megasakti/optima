@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\AccountingPeriod;
-use App\Models\Company;
 use App\Models\JournalEntry;
 use App\Models\JournalLine;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +26,7 @@ class JournalPostingService
      *     entry_number?: string|null,
      *     lines: array<array{account_id: int, debit: float|string, credit: float|string, memo?: string|null}>
      * } $data
-     * @return JournalEntry
+     *
      * @throws InvalidArgumentException
      */
     public function createAndPost(array $data): JournalEntry
@@ -42,18 +42,18 @@ class JournalPostingService
                 ->where('is_closed', false)
                 ->first();
 
-            if (!$period) {
+            if (! $period) {
                 // Fallback cari periode terbuka yang mencakup tanggal
                 $period = AccountingPeriod::where('company_id', $companyId)
                     ->where('is_closed', false)
                     ->orderBy('start_date')
                     ->first();
 
-                if (!$period) {
-                    $parsedDate = \Carbon\Carbon::parse($entryDate);
+                if (! $period) {
+                    $parsedDate = Carbon::parse($entryDate);
                     $period = AccountingPeriod::create([
                         'company_id' => $companyId,
-                        'name' => 'Periode ' . $parsedDate->translatedFormat('F Y'),
+                        'name' => 'Periode '.$parsedDate->translatedFormat('F Y'),
                         'start_date' => $parsedDate->copy()->startOfMonth()->toDateString(),
                         'end_date' => $parsedDate->copy()->endOfMonth()->toDateString(),
                         'is_closed' => false,
@@ -64,7 +64,7 @@ class JournalPostingService
             // 2. Validasi Minimal 2 Baris Jurnal
             $lines = $data['lines'] ?? [];
             if (count($lines) < 2) {
-                throw new InvalidArgumentException("Jurnal akuntansi wajib memiliki minimal 2 baris transaksi (debit dan kredit).");
+                throw new InvalidArgumentException('Jurnal akuntansi wajib memiliki minimal 2 baris transaksi (debit dan kredit).');
             }
 
             // 3. Hitung dan Validasi Keseimbangan Debit vs Kredit
@@ -81,13 +81,13 @@ class JournalPostingService
 
             if (bccomp($totalDebit, $totalCredit, 2) !== 0) {
                 throw new InvalidArgumentException(
-                    "Jurnal tidak seimbang (Unbalanced)! Total Debit: Rp " . number_format((float) $totalDebit, 2) .
-                    " tidak sama dengan Total Kredit: Rp " . number_format((float) $totalCredit, 2)
+                    'Jurnal tidak seimbang (Unbalanced)! Total Debit: Rp '.number_format((float) $totalDebit, 2).
+                    ' tidak sama dengan Total Kredit: Rp '.number_format((float) $totalCredit, 2)
                 );
             }
 
             if (bccomp($totalDebit, '0.00', 2) === 0) {
-                throw new InvalidArgumentException("Nilai transaksi jurnal tidak boleh nol.");
+                throw new InvalidArgumentException('Nilai transaksi jurnal tidak boleh nol.');
             }
 
             // 4. Generate Nomor Jurnal Unik jika belum disediakan
@@ -133,7 +133,7 @@ class JournalPostingService
                 [
                     'entry_number' => $journal->entry_number,
                     'total' => $totalDebit,
-                    'source_module' => $journal->source_module
+                    'source_module' => $journal->source_module,
                 ],
                 "Posting Jurnal {$journal->entry_number}: {$journal->description}"
             );
@@ -148,7 +148,7 @@ class JournalPostingService
     protected function generateEntryNumber(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "JV-" . date('Y-m', strtotime($date)) . "-";
+        $prefix = 'JV-'.date('Y-m', strtotime($date)).'-';
 
         $lastNumber = JournalEntry::where('company_id', $companyId)
             ->where('entry_number', 'like', "{$prefix}%")
@@ -162,6 +162,6 @@ class JournalPostingService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

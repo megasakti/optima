@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 class CashFlowExport implements FromView, ShouldAutoSize, WithTitle
 {
     protected array $data;
+
     protected string $companyName;
 
     public function __construct(array $data, string $companyName = 'PT OPTIMA MITRA SERTIFIKASI')

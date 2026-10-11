@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Budget;
 use App\Models\BudgetApproval;
-use App\Models\BudgetItem;
 use App\Models\TrainingBatch;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +39,7 @@ class BudgetService
             $items = $data['items'] ?? [];
 
             if (empty($items)) {
-                throw new InvalidArgumentException("RAB wajib memiliki minimal 1 rincian pos anggaran biaya.");
+                throw new InvalidArgumentException('RAB wajib memiliki minimal 1 rincian pos anggaran biaya.');
             }
 
             $batch = TrainingBatch::where('company_id', $companyId)->findOrFail($batchId);
@@ -147,7 +146,7 @@ class BudgetService
                 $budget,
                 null,
                 ['budget_number' => $budget->budget_number, 'margin_pct' => $marginPct],
-                "Penyusunan RAB {$budget->budget_number} Batch {$batch->batch_code} (Target Margin: " . number_format($marginPct, 1) . "%)"
+                "Penyusunan RAB {$budget->budget_number} Batch {$batch->batch_code} (Target Margin: ".number_format($marginPct, 1).'%)'
             );
 
             return $budget;
@@ -159,7 +158,7 @@ class BudgetService
      */
     public function submitBudget(Budget $budget, ?string $comment = null): Budget
     {
-        if (!in_array($budget->status, ['draft', 'revised'])) {
+        if (! in_array($budget->status, ['draft', 'revised'])) {
             throw new InvalidArgumentException("RAB dengan status {$budget->status} tidak dapat diajukan kembali.");
         }
 
@@ -224,7 +223,7 @@ class BudgetService
     protected function generateBudgetNumber(int $companyId): string
     {
         $yearMonth = date('Y-m');
-        $prefix = "RAB-" . $yearMonth . "-";
+        $prefix = 'RAB-'.$yearMonth.'-';
 
         $lastNumber = Budget::where('company_id', $companyId)
             ->where('budget_number', 'like', "{$prefix}%")
@@ -238,6 +237,6 @@ class BudgetService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

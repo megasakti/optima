@@ -7,7 +7,6 @@ use App\Models\Lsp;
 use App\Models\Trainer;
 use App\Models\Vendor;
 use App\Models\VendorBill;
-use App\Models\VendorBillItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -43,11 +42,11 @@ class VendorBillService
             $items = $data['items'] ?? [];
 
             if (empty($items)) {
-                throw new InvalidArgumentException("Tagihan wajib memiliki minimal 1 rincian item biaya.");
+                throw new InvalidArgumentException('Tagihan wajib memiliki minimal 1 rincian item biaya.');
             }
 
             if (empty($data['lsp_id']) && empty($data['vendor_id']) && empty($data['trainer_id'])) {
-                throw new InvalidArgumentException("Pihak penagih wajib ditentukan (pilih salah satu: LSP mitra, Vendor, atau Instruktur).");
+                throw new InvalidArgumentException('Pihak penagih wajib ditentukan (pilih salah satu: LSP mitra, Vendor, atau Instruktur).');
             }
 
             // 1. Hitung Subtotal Item
@@ -109,7 +108,7 @@ class VendorBillService
                 $bill,
                 null,
                 ['bill_number' => $billNumber, 'total' => $totalAmount],
-                "Pembuatan Tagihan {$billNumber} sebesar Rp " . number_format($totalAmount, 2)
+                "Pembuatan Tagihan {$billNumber} sebesar Rp ".number_format($totalAmount, 2)
             );
 
             return $bill;
@@ -122,7 +121,7 @@ class VendorBillService
     public function approveBill(VendorBill $bill): VendorBill
     {
         return DB::transaction(function () use ($bill) {
-            if (!in_array($bill->status, ['draft', 'pending_approval'])) {
+            if (! in_array($bill->status, ['draft', 'pending_approval'])) {
                 throw new InvalidArgumentException("Tagihan {$bill->bill_number} sudah disetujui atau dibatalkan.");
             }
 
@@ -138,7 +137,7 @@ class VendorBillService
                 $accLiability = Account::where('company_id', $companyId)->where('code', '201')->first();
             }
 
-            if (!$accLiability) {
+            if (! $accLiability) {
                 $accLiability = Account::where('company_id', $companyId)->where('code', '201')->firstOrFail();
             }
 
@@ -179,7 +178,7 @@ class VendorBillService
             ];
 
             // 3. Posting Jurnal via JournalPostingService
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $journal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $bill->bill_date->toDateString(),
@@ -217,7 +216,7 @@ class VendorBillService
     protected function generateBillNumber(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "BILL-" . $yearMonth . "-";
+        $prefix = 'BILL-'.$yearMonth.'-';
 
         $lastNumber = VendorBill::where('company_id', $companyId)
             ->where('bill_number', 'like', "{$prefix}%")
@@ -231,6 +230,6 @@ class VendorBillService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

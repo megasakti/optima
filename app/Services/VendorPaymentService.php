@@ -39,7 +39,7 @@ class VendorPaymentService
             $allocations = $data['allocations'] ?? [];
 
             if (empty($allocations)) {
-                throw new InvalidArgumentException("Pembayaran wajib dialokasikan ke minimal 1 tagihan biaya.");
+                throw new InvalidArgumentException('Pembayaran wajib dialokasikan ke minimal 1 tagihan biaya.');
             }
 
             // 1. Validasi Total Alokasi
@@ -50,7 +50,7 @@ class VendorPaymentService
 
             if (bccomp((string) $sumAllocated, (string) $amount, 2) !== 0) {
                 throw new InvalidArgumentException(
-                    "Total alokasi pelunasan (Rp " . number_format($sumAllocated, 2) . ") harus sama dengan nominal pembayaran (Rp " . number_format($amount, 2) . ")."
+                    'Total alokasi pelunasan (Rp '.number_format($sumAllocated, 2).') harus sama dengan nominal pembayaran (Rp '.number_format($amount, 2).').'
                 );
             }
 
@@ -64,14 +64,14 @@ class VendorPaymentService
 
                 if ($applyAmt > (float) $bill->balance_due + 0.01) {
                     throw new InvalidArgumentException(
-                        "Alokasi pembayaran Rp " . number_format($applyAmt, 2) . " melebihi sisa tagihan {$bill->bill_number} (Rp " . number_format($bill->balance_due, 2) . ")."
+                        'Alokasi pembayaran Rp '.number_format($applyAmt, 2)." melebihi sisa tagihan {$bill->bill_number} (Rp ".number_format($bill->balance_due, 2).').'
                     );
                 }
 
                 if ($bill->lsp_id) {
                     $isLspPayment = true;
                 }
-                if (!$firstBatchId && $bill->batch_id) {
+                if (! $firstBatchId && $bill->batch_id) {
                     $firstBatchId = $bill->batch_id;
                 }
             }
@@ -80,7 +80,7 @@ class VendorPaymentService
             $cashBank = CashBankAccount::where('company_id', $companyId)->lockForUpdate()->findOrFail($data['cash_bank_account_id']);
             if ((float) $cashBank->current_balance < $amount) {
                 throw new InvalidArgumentException(
-                    "Saldo rekening {$cashBank->name} (Rp " . number_format($cashBank->current_balance, 2) . ") tidak mencukupi untuk melakukan pembayaran Rp " . number_format($amount, 2) . "."
+                    "Saldo rekening {$cashBank->name} (Rp ".number_format($cashBank->current_balance, 2).') tidak mencukupi untuk melakukan pembayaran Rp '.number_format($amount, 2).'.'
                 );
             }
 
@@ -158,7 +158,7 @@ class VendorPaymentService
                 $accLiability = Account::where('company_id', $companyId)->where('code', '201')->first();
             }
 
-            if (!$accLiability) {
+            if (! $accLiability) {
                 $accLiability = Account::where('company_id', $companyId)->where('code', '201')->firstOrFail();
             }
 
@@ -177,7 +177,7 @@ class VendorPaymentService
                 ],
             ];
 
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $journal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $data['payment_date'],
@@ -196,7 +196,7 @@ class VendorPaymentService
                 $payment,
                 null,
                 ['payment_number' => $paymentNumber, 'amount' => $amount, 'journal_id' => $journal->id],
-                "Pengeluaran Pembayaran Utang {$paymentNumber} sebesar Rp " . number_format($amount, 2)
+                "Pengeluaran Pembayaran Utang {$paymentNumber} sebesar Rp ".number_format($amount, 2)
             );
 
             return $payment;
@@ -209,7 +209,7 @@ class VendorPaymentService
     protected function generatePaymentNumber(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "VPY-" . $yearMonth . "-";
+        $prefix = 'VPY-'.$yearMonth.'-';
 
         $lastNumber = VendorPayment::where('company_id', $companyId)
             ->where('payment_number', 'like', "{$prefix}%")
@@ -223,6 +223,6 @@ class VendorPaymentService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

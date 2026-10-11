@@ -16,8 +16,11 @@ class MasterCrudAndDeletionApprovalTest extends TestCase
     use DatabaseTransactions;
 
     protected Company $company;
+
     protected User $superAdmin;
+
     protected User $financeManager;
+
     protected User $operationsCoordinator;
 
     protected function setUp(): void

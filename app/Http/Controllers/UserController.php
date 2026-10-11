@@ -38,8 +38,8 @@ class UserController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -55,6 +55,7 @@ class UserController extends Controller
     public function create(): View
     {
         $roles = Role::orderBy('name')->get();
+
         return view('admin.users.create', compact('roles'));
     }
 
@@ -135,7 +136,7 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
-            'email' => ['required', 'string', 'email', 'max:150', 'unique:users,email,' . $id],
+            'email' => ['required', 'string', 'email', 'max:150', 'unique:users,email,'.$id],
             'phone' => ['nullable', 'string', 'max:50'],
             'role' => ['required', 'exists:roles,name'],
             'password' => ['nullable', Password::min(8)],
@@ -147,7 +148,7 @@ class UserController extends Controller
         $targetUser->phone = $validated['phone'];
         $targetUser->is_active = $request->boolean('is_active');
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $targetUser->password = Hash::make($validated['password']);
         }
 

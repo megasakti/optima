@@ -7,7 +7,6 @@ use App\Models\Budget;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\InvoiceItem;
 use App\Models\Lsp;
 use App\Models\Trainer;
 use App\Models\TrainingBatch;
@@ -15,7 +14,6 @@ use App\Models\TrainingProgram;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\VendorBill;
-use App\Models\VendorBillItem;
 use App\Services\BatchProfitabilityService;
 use App\Services\BudgetService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,10 +26,15 @@ class TrainingBatchAndBudgetingTest extends TestCase
     protected bool $seed = true;
 
     protected Company $company;
+
     protected User $financeManager;
+
     protected User $operationsCoordinator;
+
     protected TrainingProgram $program;
+
     protected Lsp $lsp;
+
     protected Trainer $trainer;
 
     protected function setUp(): void

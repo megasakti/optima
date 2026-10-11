@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\BankTransaction;
 use App\Models\CashBankAccount;
 use App\Services\TreasuryService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +26,7 @@ class CashBankController extends Controller
 
         $selectedAccountId = $request->input('account_id', $accounts->first()?->id);
 
-        $txQuery = BankTransaction::whereHas('cashBankAccount', fn($q) => $q->where('company_id', $companyId))
+        $txQuery = BankTransaction::whereHas('cashBankAccount', fn ($q) => $q->where('company_id', $companyId))
             ->with(['cashBankAccount', 'journalEntry'])
             ->orderBy('transaction_date', 'desc')
             ->orderBy('id', 'desc');
@@ -94,7 +93,7 @@ class CashBankController extends Controller
             );
 
             return redirect()->route('cash-bank.index')
-                ->with('success', "Pemindahbukuan dana berhasil diproses dan jurnal mutasi kas telah diposting!");
+                ->with('success', 'Pemindahbukuan dana berhasil diproses dan jurnal mutasi kas telah diposting!');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', $e->getMessage());
         }

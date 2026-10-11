@@ -40,7 +40,7 @@ return new class extends Migration
                 'partial',
                 'paid',
                 'overdue',
-                'cancelled'
+                'cancelled',
             ])->default('draft');
             $table->text('notes')->nullable();
             $table->text('terms_conditions')->nullable();

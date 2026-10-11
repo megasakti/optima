@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Customer;
 use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -43,7 +42,7 @@ class ReceivableAgingService
 
         foreach ($invoices as $inv) {
             $custId = $inv->customer_id;
-            if (!isset($grouped[$custId])) {
+            if (! isset($grouped[$custId])) {
                 $grouped[$custId] = [
                     'customer' => $inv->customer,
                     'current' => 0.0,

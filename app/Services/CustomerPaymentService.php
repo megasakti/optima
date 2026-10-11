@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Account;
 use App\Models\BankTransaction;
 use App\Models\CashBankAccount;
-use App\Models\Customer;
 use App\Models\CustomerPayment;
 use App\Models\Invoice;
 use App\Models\PaymentAllocation;
@@ -41,7 +40,7 @@ class CustomerPaymentService
 
             $allocations = $data['allocations'] ?? [];
             if (empty($allocations)) {
-                throw new InvalidArgumentException("Pembayaran wajib dialokasikan ke minimal 1 invoice tagihan.");
+                throw new InvalidArgumentException('Pembayaran wajib dialokasikan ke minimal 1 invoice tagihan.');
             }
 
             // 1. Validasi Total Alokasi
@@ -52,7 +51,7 @@ class CustomerPaymentService
 
             if (bccomp((string) $sumAllocated, (string) $totalCredited, 2) !== 0) {
                 throw new InvalidArgumentException(
-                    "Total alokasi pelunasan (Rp " . number_format($sumAllocated, 2) . ") harus sama dengan total kredit pembayaran (Rp " . number_format($totalCredited, 2) . ")."
+                    'Total alokasi pelunasan (Rp '.number_format($sumAllocated, 2).') harus sama dengan total kredit pembayaran (Rp '.number_format($totalCredited, 2).').'
                 );
             }
 
@@ -63,7 +62,7 @@ class CustomerPaymentService
 
                 if ($applyAmt > (float) $inv->balance_due + 0.01) {
                     throw new InvalidArgumentException(
-                        "Alokasi pembayaran Rp " . number_format($applyAmt, 2) . " melebihi sisa tagihan Invoice {$inv->invoice_number} (Rp " . number_format($inv->balance_due, 2) . ")."
+                        'Alokasi pembayaran Rp '.number_format($applyAmt, 2)." melebihi sisa tagihan Invoice {$inv->invoice_number} (Rp ".number_format($inv->balance_due, 2).').'
                     );
                 }
             }
@@ -111,7 +110,7 @@ class CustomerPaymentService
                     'status' => $newStatus,
                 ]);
 
-                if (!$firstBatchId && $inv->batch_id) {
+                if (! $firstBatchId && $inv->batch_id) {
                     $firstBatchId = $inv->batch_id;
                 }
             }
@@ -171,7 +170,7 @@ class CustomerPaymentService
                 'memo' => "Pelunasan Piutang Kwitansi {$paymentNumber}",
             ];
 
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $journal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $data['payment_date'],
@@ -190,7 +189,7 @@ class CustomerPaymentService
                 $payment,
                 null,
                 ['payment_number' => $paymentNumber, 'amount' => $amount, 'journal_id' => $journal->id],
-                "Penerimaan Pembayaran Pelanggan {$paymentNumber} sebesar Rp " . number_format($amount, 2)
+                "Penerimaan Pembayaran Pelanggan {$paymentNumber} sebesar Rp ".number_format($amount, 2)
             );
 
             return $payment;
@@ -203,7 +202,7 @@ class CustomerPaymentService
     protected function generatePaymentNumber(int $companyId, string $date): string
     {
         $yearMonth = date('Y-m', strtotime($date));
-        $prefix = "REC-" . $yearMonth . "-";
+        $prefix = 'REC-'.$yearMonth.'-';
 
         $lastNumber = CustomerPayment::where('company_id', $companyId)
             ->where('payment_number', 'like', "{$prefix}%")
@@ -217,6 +216,6 @@ class CustomerPaymentService
             $nextSeq = 1;
         }
 
-        return $prefix . str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextSeq, 4, '0', STR_PAD_LEFT);
     }
 }

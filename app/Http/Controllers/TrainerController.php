@@ -27,9 +27,9 @@ class TrainerController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
-                  ->orWhere('specialization', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhere('specialization', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
             });
         }
 
@@ -54,7 +54,7 @@ class TrainerController extends Controller
         $companyId = Auth::user()->company_id;
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:trainers,code,NULL,id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:trainers,code,NULL,id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'specialization' => ['nullable', 'string', 'max:150'],
             'phone' => ['nullable', 'string', 'max:50'],
@@ -123,7 +123,7 @@ class TrainerController extends Controller
         $oldData = $trainer->toArray();
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:trainers,code,' . $id . ',id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:trainers,code,'.$id.',id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'specialization' => ['nullable', 'string', 'max:150'],
             'phone' => ['nullable', 'string', 'max:50'],

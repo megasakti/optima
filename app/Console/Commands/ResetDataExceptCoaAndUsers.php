@@ -35,8 +35,9 @@ class ResetDataExceptCoaAndUsers extends Command
         $this->line(' - Data Perusahaan (companies)');
         $this->line(' - Migrasi Sistem (migrations)');
 
-        if (!$this->option('force') && !$this->confirm('Apakah Anda yakin ingin melanjutkan pengosongan data?')) {
+        if (! $this->option('force') && ! $this->confirm('Apakah Anda yakin ingin melanjutkan pengosongan data?')) {
             $this->info('Operasi dibatalkan.');
+
             return Command::SUCCESS;
         }
 
@@ -46,34 +47,34 @@ class ResetDataExceptCoaAndUsers extends Command
             'payment_allocations',
             'customer_payments',
             'vendor_payments',
-            
+
             // Invoicing AR & AP Bills
             'invoice_items',
             'invoices',
             'vendor_bill_items',
             'vendor_bills',
-            
+
             // Transaksi Kas Bank
             'cash_bank_transactions',
-            
+
             // Jurnal Umum & Buku Besar
             'journal_lines',
             'journal_entries',
-            
+
             // Budgeting & RAB
             'budget_items',
             'budgets',
-            
+
             // Operasional Batch Pelatihan & Skema
             'training_batches',
             'training_programs',
-            
+
             // Kontak Master Eksternal
             'customers',
             'lsps',
             'vendors',
             'trainers',
-            
+
             // Log & Permohonan
             'deletion_requests',
             'audit_logs',
@@ -98,14 +99,14 @@ class ResetDataExceptCoaAndUsers extends Command
                 'initial_balance' => 0.00,
                 'current_balance' => 0.00,
             ]);
-            $this->line(" <fg=green>✓</> Mereset saldo tabel <options=bold>cash_bank_accounts</> menjadi Rp 0.00");
+            $this->line(' <fg=green>✓</> Mereset saldo tabel <options=bold>cash_bank_accounts</> menjadi Rp 0.00');
         }
 
         Schema::enableForeignKeyConstraints();
 
         $this->newLine();
         $this->info("Berhasil! {$clearedCount} tabel operasional dan transaksi telah dikosongkan.");
-        $this->info("Bagan Akun (Chart of Accounts) dan data Pengguna/PIC tetap utuh dan siap digunakan.");
+        $this->info('Bagan Akun (Chart of Accounts) dan data Pengguna/PIC tetap utuh dan siap digunakan.');
 
         return Command::SUCCESS;
     }

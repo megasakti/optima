@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Account;
 use App\Models\Company;
 use App\Models\JournalEntry;
 use App\Models\User;
@@ -18,8 +17,11 @@ class JournalImportTest extends TestCase
     use DatabaseTransactions;
 
     protected Company $company;
+
     protected User $superAdmin;
+
     protected User $financeManager;
+
     protected User $accountant;
 
     protected function setUp(): void
@@ -50,7 +52,7 @@ class JournalImportTest extends TestCase
         $service = app(JournalImportService::class);
         $spreadsheet = $service->generateTemplate($this->company->id);
 
-        $tempPath = tempnam(sys_get_temp_dir(), 'test_import_') . '.xlsx';
+        $tempPath = tempnam(sys_get_temp_dir(), 'test_import_').'.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($tempPath);
 
@@ -85,7 +87,7 @@ class JournalImportTest extends TestCase
     {
         $initialCount = JournalEntry::count();
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray([
             ['No Transaksi', 'Tanggal', 'Deskripsi', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit'],
@@ -93,7 +95,7 @@ class JournalImportTest extends TestCase
             ['TRX-ERR-01', '2026-03-01', 'Jurnal Tidak Seimbang', '401', 'PENDAPATAN', 0, 7500000], // Selisih 2.5 jt
         ]);
 
-        $tempPath = tempnam(sys_get_temp_dir(), 'test_unbalanced_') . '.xlsx';
+        $tempPath = tempnam(sys_get_temp_dir(), 'test_unbalanced_').'.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($tempPath);
 
@@ -119,7 +121,7 @@ class JournalImportTest extends TestCase
     {
         $initialCount = JournalEntry::count();
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->fromArray([
             ['No Transaksi', 'Tanggal', 'Deskripsi', 'Kode Akun', 'Nama Akun', 'Debit', 'Kredit'],
@@ -127,7 +129,7 @@ class JournalImportTest extends TestCase
             ['TRX-ERR-02', '2026-03-01', 'Akun Tidak Ada', '101', 'KAS', 0, 5000000],
         ]);
 
-        $tempPath = tempnam(sys_get_temp_dir(), 'test_unknown_acc_') . '.xlsx';
+        $tempPath = tempnam(sys_get_temp_dir(), 'test_unknown_acc_').'.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($tempPath);
 

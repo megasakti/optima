@@ -20,7 +20,7 @@ class PdfBudgetService
             'items.account',
             'createdBy',
             'approvedBy',
-            'approvals.user'
+            'approvals.user',
         ]);
 
         $pdf = Pdf::loadView('budgets.pdf', compact('budget'))

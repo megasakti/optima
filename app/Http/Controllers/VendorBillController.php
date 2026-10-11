@@ -48,10 +48,10 @@ class VendorBillController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('bill_number', 'like', "%{$search}%")
-                  ->orWhere('vendor_invoice_number', 'like', "%{$search}%")
-                  ->orWhereHas('lsp', fn($sq) => $sq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('vendor', fn($sq) => $sq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('trainer', fn($sq) => $sq->where('name', 'like', "%{$search}%"));
+                    ->orWhere('vendor_invoice_number', 'like', "%{$search}%")
+                    ->orWhereHas('lsp', fn ($sq) => $sq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('vendor', fn ($sq) => $sq->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('trainer', fn ($sq) => $sq->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -156,7 +156,7 @@ class VendorBillController extends Controller
                 'journalEntry.lines.account',
                 'paymentAllocations.vendorPayment.cashBankAccount',
                 'createdBy',
-                'approvedBy'
+                'approvedBy',
             ])
             ->findOrFail($id);
 

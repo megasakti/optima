@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Account;
 use App\Models\BankTransaction;
 use App\Models\CashBankAccount;
 use Illuminate\Support\Facades\Auth;
@@ -25,11 +24,11 @@ class TreasuryService
     ): array {
         return DB::transaction(function () use ($companyId, $fromAccountId, $toAccountId, $amount, $date, $referenceNumber, $description) {
             if ($fromAccountId === $toAccountId) {
-                throw new InvalidArgumentException("Rekening asal dan rekening tujuan transfer tidak boleh sama.");
+                throw new InvalidArgumentException('Rekening asal dan rekening tujuan transfer tidak boleh sama.');
             }
 
             if ($amount <= 0) {
-                throw new InvalidArgumentException("Nominal transfer harus lebih besar dari 0.");
+                throw new InvalidArgumentException('Nominal transfer harus lebih besar dari 0.');
             }
 
             $fromAcc = CashBankAccount::where('company_id', $companyId)->lockForUpdate()->findOrFail($fromAccountId);
@@ -37,7 +36,7 @@ class TreasuryService
 
             if ((float) $fromAcc->current_balance < $amount) {
                 throw new InvalidArgumentException(
-                    "Saldo {$fromAcc->name} (Rp " . number_format($fromAcc->current_balance, 2) . ") tidak mencukupi untuk transfer Rp " . number_format($amount, 2) . "."
+                    "Saldo {$fromAcc->name} (Rp ".number_format($fromAcc->current_balance, 2).') tidak mencukupi untuk transfer Rp '.number_format($amount, 2).'.'
                 );
             }
 
@@ -55,7 +54,7 @@ class TreasuryService
                 'transaction_type' => 'transfer_out',
                 'amount' => $amount,
                 'reference_number' => $referenceNumber,
-                'description' => "Transfer Keluar ke {$toAcc->name} - " . $memo,
+                'description' => "Transfer Keluar ke {$toAcc->name} - ".$memo,
                 'is_reconciled' => true,
                 'reconciled_at' => now(),
                 'reconciled_by' => $user?->id,
@@ -67,7 +66,7 @@ class TreasuryService
                 'transaction_type' => 'transfer_in',
                 'amount' => $amount,
                 'reference_number' => $referenceNumber,
-                'description' => "Transfer Masuk dari {$fromAcc->name} - " . $memo,
+                'description' => "Transfer Masuk dari {$fromAcc->name} - ".$memo,
                 'is_reconciled' => true,
                 'reconciled_at' => now(),
                 'reconciled_by' => $user?->id,
@@ -76,7 +75,7 @@ class TreasuryService
             // 3. Posting Jurnal Double-Entry Antar Kas/Bank
             // Debit: Rekening Kas/Bank Tujuan
             // Kredit: Rekening Kas/Bank Asal
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $journal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $date,
@@ -108,7 +107,7 @@ class TreasuryService
                 $fromAcc,
                 ['from' => $fromAcc->name, 'to' => $toAcc->name],
                 ['amount' => $amount, 'journal_id' => $journal->id],
-                "Transfer kas/bank senilai Rp " . number_format($amount, 2) . " dari {$fromAcc->name} ke {$toAcc->name}"
+                'Transfer kas/bank senilai Rp '.number_format($amount, 2)." dari {$fromAcc->name} ke {$toAcc->name}"
             );
 
             return [
@@ -126,7 +125,7 @@ class TreasuryService
     {
         $tx = BankTransaction::findOrFail($transactionId);
 
-        $newStatus = !$tx->is_reconciled;
+        $newStatus = ! $tx->is_reconciled;
         $tx->update([
             'is_reconciled' => $newStatus,
             'reconciled_at' => $newStatus ? now() : null,

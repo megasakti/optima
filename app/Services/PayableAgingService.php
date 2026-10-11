@@ -42,24 +42,24 @@ class PayableAgingService
         foreach ($bills as $bill) {
             // Tentukan identitas payee
             if ($bill->lsp_id) {
-                $payeeKey = 'lsp_' . $bill->lsp_id;
+                $payeeKey = 'lsp_'.$bill->lsp_id;
                 $payeeName = $bill->lsp->name;
                 $payeeType = 'Lembaga Sertifikasi (LSP)';
             } elseif ($bill->vendor_id) {
-                $payeeKey = 'vendor_' . $bill->vendor_id;
+                $payeeKey = 'vendor_'.$bill->vendor_id;
                 $payeeName = $bill->vendor->name;
-                $payeeType = 'Vendor ' . ucfirst($bill->vendor->category ?? 'Umum');
+                $payeeType = 'Vendor '.ucfirst($bill->vendor->category ?? 'Umum');
             } elseif ($bill->trainer_id) {
-                $payeeKey = 'trainer_' . $bill->trainer_id;
+                $payeeKey = 'trainer_'.$bill->trainer_id;
                 $payeeName = $bill->trainer->name;
                 $payeeType = 'Instruktur / Asesor';
             } else {
-                $payeeKey = 'other_' . $bill->id;
+                $payeeKey = 'other_'.$bill->id;
                 $payeeName = 'Vendor Lainnya';
                 $payeeType = 'Lainnya';
             }
 
-            if (!isset($grouped[$payeeKey])) {
+            if (! isset($grouped[$payeeKey])) {
                 $grouped[$payeeKey] = [
                     'name' => $payeeName,
                     'type' => $payeeType,

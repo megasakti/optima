@@ -33,7 +33,7 @@ class DeletionApprovalController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('model_label', 'like', "%{$search}%")
-                  ->orWhere('reason', 'like', "%{$search}%");
+                    ->orWhere('reason', 'like', "%{$search}%");
             });
         }
 
@@ -52,6 +52,7 @@ class DeletionApprovalController extends Controller
 
         try {
             $result = $service->approve($deletionRequest, Auth::user());
+
             return back()->with('success', $result['message']);
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -71,6 +72,7 @@ class DeletionApprovalController extends Controller
 
         try {
             $result = $service->reject($deletionRequest, Auth::user(), $request->rejection_reason);
+
             return back()->with('info', $result['message']);
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());

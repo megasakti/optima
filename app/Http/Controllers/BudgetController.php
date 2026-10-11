@@ -49,7 +49,7 @@ class BudgetController extends Controller
         }
 
         $batches = TrainingBatch::where('company_id', $companyId)
-            ->whereDoesntHave('budget', fn($q) => $q->where('status', 'approved'))
+            ->whereDoesntHave('budget', fn ($q) => $q->where('status', 'approved'))
             ->with('program')
             ->orderBy('batch_code', 'desc')
             ->get();

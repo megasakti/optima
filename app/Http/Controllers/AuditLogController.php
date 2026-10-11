@@ -41,8 +41,8 @@ class AuditLogController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('description', 'like', "%{$search}%")
-                  ->orWhere('ip_address', 'like', "%{$search}%")
-                  ->orWhere('auditable_type', 'like', "%{$search}%");
+                    ->orWhere('ip_address', 'like', "%{$search}%")
+                    ->orWhere('auditable_type', 'like', "%{$search}%");
             });
         }
 

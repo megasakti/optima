@@ -34,16 +34,16 @@ class TrialBalanceService
             $sumDebit = (float) JournalLine::where('account_id', $account->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })
                 ->sum('debit');
 
             $sumCredit = (float) JournalLine::where('account_id', $account->id)
                 ->whereHas('entry', function ($q) use ($companyId, $asOfDate) {
                     $q->where('company_id', $companyId)
-                      ->where('status', 'posted')
-                      ->where('entry_date', '<=', $asOfDate);
+                        ->where('status', 'posted')
+                        ->where('entry_date', '<=', $asOfDate);
                 })
                 ->sum('credit');
 

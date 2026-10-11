@@ -20,7 +20,7 @@ class PdfVendorBillService
             'cashBankAccount',
             'allocations.vendorBill.items',
             'createdBy',
-            'journalEntry.lines.account'
+            'journalEntry.lines.account',
         ]);
 
         $pdf = Pdf::loadView('vendor_payments.voucher_pdf', compact('payment'))

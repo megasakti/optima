@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Account;
 use App\Models\AccountingPeriod;
 use App\Models\Company;
-use App\Models\JournalEntry;
 use App\Models\User;
 use App\Services\GeneralLedgerService;
 use App\Services\JournalPostingService;
@@ -21,6 +20,7 @@ class GeneralLedgerTest extends TestCase
     use DatabaseTransactions;
 
     protected User $financeManager;
+
     protected Company $company;
 
     protected function setUp(): void
@@ -75,7 +75,7 @@ class GeneralLedgerTest extends TestCase
 
     public function test_journal_posting_service_validates_double_entry_balance(): void
     {
-        $service = new JournalPostingService();
+        $service = new JournalPostingService;
 
         $accKas = Account::where('company_id', $this->company->id)->where('code', '101')->first();
         $accRev = Account::where('company_id', $this->company->id)->where('code', '401')->first();
@@ -97,7 +97,7 @@ class GeneralLedgerTest extends TestCase
 
     public function test_journal_posting_service_creates_and_posts_balanced_journal(): void
     {
-        $service = new JournalPostingService();
+        $service = new JournalPostingService;
 
         $accKas = Account::where('company_id', $this->company->id)->where('code', '101')->first();
         $accRev = Account::where('company_id', $this->company->id)->where('code', '401')->first();
@@ -133,8 +133,8 @@ class GeneralLedgerTest extends TestCase
 
     public function test_journal_reversal_creates_opposite_entries_and_marks_original_reversed(): void
     {
-        $postingService = new JournalPostingService();
-        $reversalService = new JournalReversalService();
+        $postingService = new JournalPostingService;
+        $reversalService = new JournalReversalService;
 
         $accKas = Account::where('company_id', $this->company->id)->where('code', '101')->first();
         $accHotel = Account::where('company_id', $this->company->id)->where('code', '515')->first();
@@ -178,8 +178,8 @@ class GeneralLedgerTest extends TestCase
 
     public function test_reversed_journal_cannot_be_reversed_again(): void
     {
-        $postingService = new JournalPostingService();
-        $reversalService = new JournalReversalService();
+        $postingService = new JournalPostingService;
+        $reversalService = new JournalReversalService;
 
         $accKas = Account::where('company_id', $this->company->id)->where('code', '101')->first();
         $accRev = Account::where('company_id', $this->company->id)->where('code', '401')->first();
@@ -204,7 +204,7 @@ class GeneralLedgerTest extends TestCase
 
     public function test_general_ledger_service_calculates_correct_movements(): void
     {
-        $service = new GeneralLedgerService();
+        $service = new GeneralLedgerService;
         $accKas = Account::where('company_id', $this->company->id)->where('code', '101')->first();
 
         $ledger = $service->getAccountLedger($accKas, '2026-01-01', '2026-12-31');
@@ -219,7 +219,7 @@ class GeneralLedgerTest extends TestCase
 
     public function test_trial_balance_service_produces_balanced_report(): void
     {
-        $service = new TrialBalanceService();
+        $service = new TrialBalanceService;
 
         $tb = $service->generate($this->company->id, '2026-12-31');
 
@@ -230,7 +230,7 @@ class GeneralLedgerTest extends TestCase
 
     public function test_period_closing_service_generates_closing_entries_and_locks_period(): void
     {
-        $closingService = new PeriodClosingService();
+        $closingService = new PeriodClosingService;
 
         // Cari periode yang terbuka
         $period = AccountingPeriod::where('company_id', $this->company->id)->where('is_closed', false)->first();

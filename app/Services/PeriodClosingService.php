@@ -28,9 +28,9 @@ class PeriodClosingService
             $incomeSummaryAccount = Account::where('company_id', $companyId)->where('code', '303')->first();
             $retainedEarningsAccount = Account::where('company_id', $companyId)->where('code', '302')->first();
 
-            if (!$incomeSummaryAccount || !$retainedEarningsAccount) {
+            if (! $incomeSummaryAccount || ! $retainedEarningsAccount) {
                 throw new InvalidArgumentException(
-                    "Akun 303 (Ikhtisar Laba Rugi) atau 302 (Saldo Laba) belum terdaftar di Chart of Accounts."
+                    'Akun 303 (Ikhtisar Laba Rugi) atau 302 (Saldo Laba) belum terdaftar di Chart of Accounts.'
                 );
             }
 
@@ -47,18 +47,18 @@ class PeriodClosingService
                 $credits = (float) JournalLine::where('account_id', $revAcc->id)
                     ->whereHas('entry', function ($q) use ($companyId, $period) {
                         $q->where('company_id', $companyId)
-                          ->where('period_id', $period->id)
-                          ->where('status', 'posted')
-                          ->where('source_module', '!=', 'closing');
+                            ->where('period_id', $period->id)
+                            ->where('status', 'posted')
+                            ->where('source_module', '!=', 'closing');
                     })
                     ->sum('credit');
 
                 $debits = (float) JournalLine::where('account_id', $revAcc->id)
                     ->whereHas('entry', function ($q) use ($companyId, $period) {
                         $q->where('company_id', $companyId)
-                          ->where('period_id', $period->id)
-                          ->where('status', 'posted')
-                          ->where('source_module', '!=', 'closing');
+                            ->where('period_id', $period->id)
+                            ->where('status', 'posted')
+                            ->where('source_module', '!=', 'closing');
                     })
                     ->sum('debit');
 
@@ -87,18 +87,18 @@ class PeriodClosingService
                 $debits = (float) JournalLine::where('account_id', $expAcc->id)
                     ->whereHas('entry', function ($q) use ($companyId, $period) {
                         $q->where('company_id', $companyId)
-                          ->where('period_id', $period->id)
-                          ->where('status', 'posted')
-                          ->where('source_module', '!=', 'closing');
+                            ->where('period_id', $period->id)
+                            ->where('status', 'posted')
+                            ->where('source_module', '!=', 'closing');
                     })
                     ->sum('debit');
 
                 $credits = (float) JournalLine::where('account_id', $expAcc->id)
                     ->whereHas('entry', function ($q) use ($companyId, $period) {
                         $q->where('company_id', $companyId)
-                          ->where('period_id', $period->id)
-                          ->where('status', 'posted')
-                          ->where('source_module', '!=', 'closing');
+                            ->where('period_id', $period->id)
+                            ->where('status', 'posted')
+                            ->where('source_module', '!=', 'closing');
                     })
                     ->sum('credit');
 
@@ -137,13 +137,13 @@ class PeriodClosingService
             }
 
             // 5. Posting Jurnal Penutup
-            $postingService = new JournalPostingService();
+            $postingService = new JournalPostingService;
             $closingJournal = $postingService->createAndPost([
                 'company_id' => $companyId,
                 'entry_date' => $closingDate,
-                'entry_number' => "CLS-" . date('Ymd', strtotime($closingDate)) . "-{$period->id}",
+                'entry_number' => 'CLS-'.date('Ymd', strtotime($closingDate))."-{$period->id}",
                 'source_module' => 'closing',
-                'description' => "Jurnal Penutup Akhir Periode {$period->name} (Laba Bersih: Rp " . number_format($netProfit, 2) . ")",
+                'description' => "Jurnal Penutup Akhir Periode {$period->name} (Laba Bersih: Rp ".number_format($netProfit, 2).')',
                 'lines' => $closingLines,
             ]);
 

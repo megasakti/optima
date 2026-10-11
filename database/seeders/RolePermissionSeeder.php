@@ -5,13 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // 1. Create Permissions
         $permissions = [
@@ -19,32 +20,33 @@ class RolePermissionSeeder extends Seeder
             'view-accounts', 'create-accounts', 'edit-accounts', 'delete-accounts',
             'view-journals', 'create-journals', 'post-journals', 'reverse-journals',
             'view-ledger', 'view-financial-reports', 'close-period',
-            
+
             // Invoices & Receivables
             'view-invoices', 'create-invoices', 'edit-invoices', 'approve-invoices', 'delete-invoices',
             'record-customer-payments', 'view-customer-payments',
-            
+
             // Bills & Payables (LSP & Vendors)
             'view-bills', 'create-bills', 'edit-bills', 'approve-bills', 'delete-bills',
             'record-vendor-payments', 'view-vendor-payments',
-            
+
             // Treasury (Cash & Bank)
             'view-cash-bank', 'manage-cash-bank', 'reconcile-bank',
-            
+
             // Training & Operations
             'view-batches', 'create-batches', 'edit-batches', 'close-batches',
             'view-programs', 'create-programs', 'edit-programs', 'delete-programs',
             'view-customers', 'create-customers', 'edit-customers',
+            'view-participants', 'create-participants', 'edit-participants', 'delete-participants',
             'view-lsps', 'create-lsps', 'edit-lsps', 'delete-lsps',
             'view-vendors', 'create-vendors', 'edit-vendors',
             'view-trainers', 'create-trainers', 'edit-trainers', 'delete-trainers',
-            
+
             // Budgeting & RAB
             'view-budgets', 'create-budgets', 'edit-budgets', 'approve-budgets',
-            
+
             // Admin & Audit
             'manage-users', 'view-users', 'create-users', 'edit-users', 'delete-users',
-            'approve-deletion', 'manage-roles', 'view-audit-logs', 'manage-settings'
+            'approve-deletion', 'manage-roles', 'view-audit-logs', 'manage-settings',
         ];
 
         foreach ($permissions as $perm) {
@@ -67,9 +69,9 @@ class RolePermissionSeeder extends Seeder
             'view-bills', 'create-bills', 'approve-bills',
             'record-vendor-payments', 'view-vendor-payments',
             'view-cash-bank', 'manage-cash-bank', 'reconcile-bank',
-            'view-batches', 'view-programs', 'view-customers', 'view-lsps', 'view-vendors', 'view-trainers',
+            'view-batches', 'view-programs', 'view-customers', 'view-participants', 'create-participants', 'edit-participants', 'view-lsps', 'view-vendors', 'view-trainers',
             'view-budgets', 'approve-budgets',
-            'view-audit-logs'
+            'view-audit-logs',
         ]);
 
         // Accountant / Kasir: Day-to-day transactions (Invoices, Bills, Payments)
@@ -83,8 +85,8 @@ class RolePermissionSeeder extends Seeder
             'view-bills', 'create-bills',
             'record-vendor-payments', 'view-vendor-payments',
             'view-cash-bank',
-            'view-batches', 'view-customers', 'view-lsps', 'view-vendors', 'view-trainers',
-            'view-budgets'
+            'view-batches', 'view-customers', 'view-participants', 'view-lsps', 'view-vendors', 'view-trainers',
+            'view-budgets',
         ]);
 
         // Operations / Batch Coordinator: Batches, RAB submission, viewing customers & trainers
@@ -93,8 +95,9 @@ class RolePermissionSeeder extends Seeder
             'view-batches', 'create-batches', 'edit-batches',
             'view-programs',
             'view-customers', 'create-customers', 'edit-customers',
+            'view-participants', 'create-participants', 'edit-participants', 'delete-participants',
             'view-lsps', 'view-trainers',
-            'view-budgets', 'create-budgets', 'edit-budgets'
+            'view-budgets', 'create-budgets', 'edit-budgets',
         ]);
 
         // Auditor / Management: Read-only access to all reports & audit logs
@@ -103,8 +106,8 @@ class RolePermissionSeeder extends Seeder
             'view-accounts', 'view-journals', 'view-ledger', 'view-financial-reports',
             'view-invoices', 'view-customer-payments',
             'view-bills', 'view-vendor-payments',
-            'view-cash-bank', 'view-batches', 'view-budgets',
-            'view-audit-logs'
+            'view-cash-bank', 'view-batches', 'view-participants', 'view-budgets',
+            'view-audit-logs',
         ]);
     }
 }

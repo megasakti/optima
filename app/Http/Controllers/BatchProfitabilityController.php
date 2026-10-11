@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\TrainingBatch;
 use App\Services\BatchProfitabilityService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 

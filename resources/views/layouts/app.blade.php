@@ -355,8 +355,15 @@
                 @endcan
 
                 <!-- SECTION: PELATIHAN & ANGGARAN -->
-                @canany(['view-batches', 'view-programs', 'view-budgets', 'view-lsps', 'view-trainers'])
+                @canany(['view-batches', 'view-programs', 'view-budgets', 'view-lsps', 'view-trainers', 'view-participants'])
                 <div class="nav-section-title">Pelatihan & Anggaran</div>
+                @can('view-participants')
+                <li class="nav-item">
+                    <a href="{{ route('participants.index') }}" class="nav-link {{ request()->routeIs('participants.*') ? 'active' : '' }}">
+                        <i class="bi bi-people-fill"></i> Data Peserta Pelatihan
+                    </a>
+                </li>
+                @endcan
                 @can('view-programs')
                 <li class="nav-item">
                     <a href="{{ route('programs.index') }}" class="nav-link {{ request()->routeIs('programs.*') ? 'active' : '' }}">

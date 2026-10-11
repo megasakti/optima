@@ -27,9 +27,9 @@ class LspController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
-                  ->orWhere('bnsp_license_number', 'like', "%{$search}%")
-                  ->orWhere('pic_name', 'like', "%{$search}%");
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhere('bnsp_license_number', 'like', "%{$search}%")
+                    ->orWhere('pic_name', 'like', "%{$search}%");
             });
         }
 
@@ -54,7 +54,7 @@ class LspController extends Controller
         $companyId = Auth::user()->company_id;
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:lsps,code,NULL,id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:lsps,code,NULL,id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'bnsp_license_number' => ['nullable', 'string', 'max:100'],
             'pic_name' => ['nullable', 'string', 'max:100'],
@@ -120,7 +120,7 @@ class LspController extends Controller
         $oldData = $lsp->toArray();
 
         $validated = $request->validate([
-            'code' => ['required', 'string', 'max:30', 'unique:lsps,code,' . $id . ',id,company_id,' . $companyId],
+            'code' => ['required', 'string', 'max:30', 'unique:lsps,code,'.$id.',id,company_id,'.$companyId],
             'name' => ['required', 'string', 'max:150'],
             'bnsp_license_number' => ['nullable', 'string', 'max:100'],
             'pic_name' => ['nullable', 'string', 'max:100'],
